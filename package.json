@@ -1,0 +1,18 @@
+{
+  "name": "stackoverflow-clone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+    "scripts": {
+    "start": "node dist/bin/www.js",
+    "clean:dist": "rimraf ./dist",
+    "prebuild": "npm run clean:dist",
+    "build:prod": "npm run prebuild && babel ./src --out-dir dist --copy-files",
+    "heroku-postbuild": "npm run build:prod",
+    "dev": "nodemon --watch src --delay 250ms --exec babel-node src/bin/www.js --ignore tests/",
+    "test": "cross-env NODE_ENV=test nyc --reporter=html mocha --require babel-core/register src/test/**/*.spec.js --exit && nyc report --timeout 50000"
+  },
+  "keywords": [],
+  "author": "Kayode Adeyemi",
+  "license": "ISC"
+}
