@@ -1,7 +1,7 @@
-import request from 'supertest';
-import app from '../app';
 import expect from 'expect.js';
 import mongoose from 'mongoose';
+import request from 'supertest';
+import app from '../app';
 before(() => {
   return mongoose.connect(process.env.MONGO_DB_URL, {
     useNewUrlParser : true,
