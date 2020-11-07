@@ -28,7 +28,7 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-// app.use(routes);
+app.use(routes);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
