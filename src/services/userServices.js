@@ -4,7 +4,7 @@ import Responses from "../helper/responses";
 const SECRET = process.env.JWT_SECRET;
 
 const getUser = async (query) => {
-  const data =  await User.findOne(query);
+  const data =  await User.findOne(query).exec();
   if(data) return {message: "user found", data}
   return {message: "user not found", data: null};
 } 
@@ -21,8 +21,14 @@ const loginService = async (res, user, password) => {
 }
 
 const createService = async (res, user) => {
-  const data = await User.findOne({$or: [{email: user.email}, {phoneNumber: user.phoneNumber}]});
-  if (data) return res.status(400).send(Responses.error(400, "user already exists"));  
+  let data = {message: 'not found', data: null};
+  if(user.email) {
+    data  = await getUser({email: user.email})
+  }
+  if(user.phoneNumber) {
+    data = await getUser({phoneNumber: user.phoneNumber})
+  }
+  if (data.data) return res.status(400).send(Responses.error(400, "user already exists"));  
   const newUser = new User();
   newUser.fullName = user.fullName;
   newUser.email = user.email;
