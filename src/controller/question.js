@@ -8,7 +8,7 @@ const create = async (req, res) => {
     if(!req.body.question) return res.status(400).send(400, 'question is required')
     const question = await Question.create({ question: req.body.question, userId: id })
     if(!question) return res.status(400).send(Responses.error(400, "unable to create question"));
-    return res.status(200).send(Responses.success(200, "question created successfully", question));
+    return res.status(201).send(Responses.success(201, "question created successfully", question));
   } catch (error) {
     logger.info(`Internal server error => ${error}`)
     return res.status(500).send(Responses.error(500, "Internal server error"));
@@ -55,9 +55,9 @@ const downVote = async (req, res) => {
   try {
     const {id} = req.params
     const question = await Question.findOne({_id: id})
-    question.upvote += 1
+    question.downvote += 1
     await question.save()
-    return res.status(200).send(Responses.success(200, 'upvoted', question));
+    return res.status(200).send(Responses.success(200, 'downvoted', question));
   } catch (error) {
     logger.info(`Internal server error => ${error}`)
     return res.status(500).send(Responses.error(500, "Internal server error"));
