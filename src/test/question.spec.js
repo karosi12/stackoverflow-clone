@@ -9,7 +9,7 @@ import User from "../model/user";
 import UserService from "../services/userServices";
 const SECRET = process.env.JWT_SECRET;
 let user, questionId, factoryUser, factoryQuestion, token;
-describe.only("#ODA Question", () => {
+describe("#ODA Question", () => {
   before(async () => {
     factoryUser = await FactoryGirl.attrs('User');
     factoryQuestion = await FactoryGirl.attrs('Question');
