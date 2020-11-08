@@ -10,7 +10,8 @@ import UserService from "../services/userServices";
 const SECRET = process.env.JWT_SECRET;
 let user, questionId, factoryUser, factoryQuestion, token;
 describe("#ODA Question", () => {
-  before(async () => {
+  before(async function () {
+    this.timeout(40000);
     factoryUser = await FactoryGirl.attrs('User');
     factoryQuestion = await FactoryGirl.attrs('Question');
     await User.remove({});
@@ -48,12 +49,10 @@ describe("#ODA Question", () => {
         expect(res.body.data).have.property("updatedAt");
         questionId = res.body.data._id
       } catch (error) {
-        console.error(error);
         throw new Error(error);
       }
     });
   });
-
   describe("Fetch question", () => {
     it("#get all question", async ()=> {
       try {
@@ -79,40 +78,9 @@ describe("#ODA Question", () => {
         expect(res.body.data[0]).have.property("createdAt");
         expect(res.body.data[0]).have.property("updatedAt");
       } catch (error) {
-          console.error(error);
-          throw new Error(error);
-      }
-    });
-
-    it("#get question", async ()=> {
-      try {
-        const res = await request(app).get(`/api/question/${questionId}`)
-        .set('Accept', 'application/json')
-        .set('Authorization', token)
-        .expect(200);
-        expect(res.body.statusCode).to.equal(200);
-        expect(res.body.success).to.equal(true);
-        expect(res.body.message).to.equal("question retrieved successfully");
-        expect(res.body).have.property("success");
-        expect(res.body).have.property("statusCode");
-        expect(res.body).have.property("message");
-        expect(res.body).have.property("data");
-        expect(res.body.data).have.property("_id");
-        expect(res.body.data).have.property("userId");
-        expect(res.body.data).have.property("subscribe");
-        expect(res.body.data).have.property("upvote");
-        expect(res.body.data).have.property("downvote");
-        expect(res.body.data).have.property("answers");
-        expect(res.body.data).have.property("question");
-        expect(res.body.data).have.property("isDeleted");
-        expect(res.body.data).have.property("createdAt");
-        expect(res.body.data).have.property("updatedAt");
-      } catch (error) {
-        console.error(error);
         throw new Error(error);
       }
     });
-
     it("#get question", async ()=> {
       try {
         const res = await request(app).get(`/api/question/${questionId}`)
@@ -137,12 +105,37 @@ describe("#ODA Question", () => {
         expect(res.body.data).have.property("createdAt");
         expect(res.body.data).have.property("updatedAt");
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
+      }
+    });
+    it("#get question", async ()=> {
+      try {
+        const res = await request(app).get(`/api/question/${questionId}`)
+        .set('Accept', 'application/json')
+        .set('Authorization', token)
+        .expect(200);
+        expect(res.body.statusCode).to.equal(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.message).to.equal("question retrieved successfully");
+        expect(res.body).have.property("success");
+        expect(res.body).have.property("statusCode");
+        expect(res.body).have.property("message");
+        expect(res.body).have.property("data");
+        expect(res.body.data).have.property("_id");
+        expect(res.body.data).have.property("userId");
+        expect(res.body.data).have.property("subscribe");
+        expect(res.body.data).have.property("upvote");
+        expect(res.body.data).have.property("downvote");
+        expect(res.body.data).have.property("answers");
+        expect(res.body.data).have.property("question");
+        expect(res.body.data).have.property("isDeleted");
+        expect(res.body.data).have.property("createdAt");
+        expect(res.body.data).have.property("updatedAt");
+      } catch (error) {
         throw new Error(error);
       }
     });
   });
-
   describe("Vote question", () => {
       it("#upvote question", async ()=> {
         try {
@@ -169,11 +162,9 @@ describe("#ODA Question", () => {
           expect(res.body.data).have.property("createdAt");
           expect(res.body.data).have.property("updatedAt");
         } catch (error) {
-          console.error(error);
           throw new Error(error);
         }
       });
-
       it("#downvote a question", async ()=> {
         try {
           const res = await request(app).get(`/api/question/down-vote/${questionId}`)
@@ -198,12 +189,10 @@ describe("#ODA Question", () => {
           expect(res.body.data).have.property("createdAt");
           expect(res.body.data).have.property("updatedAt");
         } catch (error) {
-          console.error(error);
           throw new Error(error);
         }
       });
   });
-
   describe("Answer and subscribe to a question", () => {
       it("#answer a question", async ()=> {
         try {
@@ -232,11 +221,9 @@ describe("#ODA Question", () => {
           expect(res.body.data).have.property("createdAt");
           expect(res.body.data).have.property("updatedAt");
         } catch (error) {
-          console.error(error);
           throw new Error(error);
         }
       });
-
       it("#subscribe to a question", async ()=> {
         try {
           const data = {questionId}
@@ -264,13 +251,11 @@ describe("#ODA Question", () => {
           expect(res.body.data).have.property("createdAt");
           expect(res.body.data).have.property("updatedAt");
         } catch (error) {
-          console.error(error);
           throw new Error(error);
         }
       });
   });
 });
-
 const login = async (data, password) => {
   const user = await UserService.getUser({email: data.email});
   if(!user.data) return {message: user.message, data: null};
@@ -282,7 +267,6 @@ const login = async (data, password) => {
   const result = { user: user.data, token };
   return {message: "Login successful", data: result};
 }
-
 const createUser = async (data) => {
   const user = new User();
   user.fullName = data.fullName; 

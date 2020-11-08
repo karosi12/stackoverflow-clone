@@ -1,6 +1,7 @@
 import logger from '../utils/logger';
 import Responses from "../helper/responses";
 import UserService from "../services/userServices";
+import User from "../model/user";
 
 const login = async (req, res) => {
   try {
@@ -35,4 +36,19 @@ const register = async (req, res) => {
     return res.status(500).send(Responses.error(500, "Internal server error"));
   }
 }
-export default { login, register }
+
+const list = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const search = q === undefined ? {}: { $text: { $search: `\"${q}\"` } };
+    const criteria =  Object.assign({}, search);
+    const result = await User.find(criteria)
+    if(result.length === 0) return res.status(200).send(Responses.success(200,'No record', result));
+    return res.status(200).send(Responses.success(200,'Record retrieved successfully', result));
+  } catch (error) {
+    logger.info(`Internal server error => ${error}`)
+    return res.status(500).send(Responses.error(500, "Internal server error")); 
+  }
+}
+
+export default { login, list, register }

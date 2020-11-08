@@ -31,7 +31,6 @@ describe("#ODA User", () => {
                 expect(res.body.data).have.property("createdAt");
                 expect(res.body.data).have.property("updatedAt");
             } catch (error) {
-                console.error(error);
                 throw new Error(error);
             }
         });
@@ -48,7 +47,6 @@ describe("#ODA User", () => {
                 expect(res.body.error).to.equal(true);
                 expect(res.body.statusCode).to.equal(400);
             } catch (error) {
-                console.error(error);
                 throw new Error(error);
             }
         });
@@ -67,7 +65,6 @@ describe("#ODA User", () => {
                 expect(res.body.error).to.equal(true);
                 expect(res.body.statusCode).to.equal(400);
             } catch (error) {
-                console.error(error);
                 throw new Error(error);
             }
         });
@@ -91,7 +88,6 @@ describe("#ODA User", () => {
                 expect(res.body.data).have.property("createdAt");
                 expect(res.body.data).have.property("updatedAt");
             } catch (error) {
-                console.error(error);
                 throw new Error(error);
             }
         });
@@ -112,7 +108,6 @@ describe("#ODA User", () => {
                 expect(res.body.data).have.property("user");
                 token = res.body.data.token;
             } catch (error) {
-                console.error(error);
                 throw new Error(error);  
             }
         })
@@ -130,7 +125,6 @@ describe("#ODA User", () => {
                 expect(res.body.error).to.equal(true);
                 expect(res.body.statusCode).to.equal(400);
             } catch (error) {
-                console.error(error);
                 throw new Error(error);  
             }
         });
@@ -148,9 +142,61 @@ describe("#ODA User", () => {
                 expect(res.body.error).to.equal(true);
                 expect(res.body.statusCode).to.equal(400);
             } catch (error) {
-                console.error(error);
                 throw new Error(error);  
             }
         });
     });
+    describe("Find user", () => {
+        it("Get user(s)", async () => {
+            try {
+                const search = "adeyemi"
+                const res = await request(app).get(`/api/users?q=${search}`)
+                .set('Accept', 'application/json')
+                .expect(200);
+                expect(res.body).have.property("success");
+                expect(res.body).have.property("statusCode");
+                expect(res.body).have.property("message");
+                expect(res.body.message).to.equal('Record retrieved successfully');
+                expect(res.body.success).to.equal(true);
+                expect(res.body.statusCode).to.equal(200);
+                expect(res.body.data.length).to.greaterThan(0);
+            } catch (error) {
+                throw new Error(error);  
+            }           
+        });
+
+        it("No record", async () => {
+            try {
+                const search = "lorem"
+                const res = await request(app).get(`/api/users?q=${search}`)
+                .set('Accept', 'application/json')
+                .expect(200);
+                expect(res.body).have.property("success");
+                expect(res.body).have.property("statusCode");
+                expect(res.body).have.property("message");
+                expect(res.body.message).to.equal('No record');
+                expect(res.body.success).to.equal(true);
+                expect(res.body.statusCode).to.equal(200);
+                expect(res.body.data.length).to.equal(0);
+            } catch (error) {
+                throw new Error(error);  
+            }           
+        })
+        it("Get all user", async () => {
+            try {
+                const res = await request(app).get(`/api/users`)
+                .set('Accept', 'application/json')
+                .expect(200);
+                expect(res.body).have.property("success");
+                expect(res.body).have.property("statusCode");
+                expect(res.body).have.property("message");
+                expect(res.body.message).to.equal('Record retrieved successfully');
+                expect(res.body.success).to.equal(true);
+                expect(res.body.statusCode).to.equal(200);
+                expect(res.body.data.length).to.greaterThan(0);
+            } catch (error) {
+                throw new Error(error);  
+            }           
+        })        
+    })
 });
