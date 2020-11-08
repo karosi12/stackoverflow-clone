@@ -29,7 +29,10 @@ const view = async (req, res) => {
 
 const list = async (req, res) => {
   try {
-    const question = await Question.find({})
+    const { q } = req.query;
+    const search = q === undefined ? {}: { $text: { $search: `\"${q}\"` } };
+    const criteria =  Object.assign({}, search);
+    const question = await Question.find(criteria)
     if(!question) return res.status(400).send(Responses.error(400, 'question not found'))
     if(question.length === 0) return res.status(200).send(Responses.success(200, 'Record not found', question))
     return res.status(200).send(Responses.success(200, 'Record retrieved', question));

@@ -31,6 +31,9 @@ const questionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+questionSchema.index({ '$**': 'text' });
+
+
 const questionModel = mongoose.model("question", questionSchema);
 
 export default questionModel;
