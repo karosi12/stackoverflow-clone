@@ -51,7 +51,7 @@ API Endpoint: https://stack-over-flow-api.herokuapp.com
 - Open terminal inside the root directory of clone folder
 - Type `npm install` to install all dependencies
 - `npm start` to run the app
-- npm run `start:dev` to run development environment
+- `npm run dev` to run development environment
 - `npm test` to run the test suits on the app
 
 ##
