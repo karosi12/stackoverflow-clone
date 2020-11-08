@@ -1,5 +1,5 @@
 import express from "express";
-import authenticate from "../services/authenticate";
+import authenticate from "../middlewares/authenticate";
 import questionCtrl from "../controller/question";
 const questionRouter = express.Router();
 
