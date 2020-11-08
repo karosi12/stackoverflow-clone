@@ -35,7 +35,7 @@ const createService = async (res, user) => {
   newUser.phoneNumber = user.phoneNumber;
   newUser.generateHash(user.password);
   await newUser.save();
-  return res.status(200).send(Responses.success(200, "User created successfully", newUser));  
+  return res.status(201).send(Responses.success(201, "User created successfully", newUser));  
 }
 
 export default {getUser, createService, loginService}

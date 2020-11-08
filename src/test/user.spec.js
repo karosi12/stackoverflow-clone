@@ -17,13 +17,13 @@ describe("#ODA User", () => {
                 const res = await request(app).post('/api/signup')
                 .set('Accept', 'application/json')
                 .send(factoryUser)
-                .expect(200);
+                .expect(201);
                 email = res.body.data.email
                 expect(res.body).have.property("success");
                 expect(res.body).have.property("statusCode");
                 expect(res.body).have.property("message");
                 expect(res.body).have.property("data");
-                expect(res.body.statusCode).to.equal(200);
+                expect(res.body.statusCode).to.equal(201);
                 expect(res.body.message).to.equal("User created successfully");
                 expect(res.body.data).have.property("_id");
                 expect(res.body.data).have.property("isDeleted");
@@ -77,12 +77,12 @@ describe("#ODA User", () => {
                 const res = await request(app).post('/api/signup')
                 .set('Accept', 'application/json')
                 .send(factoryUser)
-                .expect(200);
+                .expect(201);
                 expect(res.body).have.property("success");
                 expect(res.body).have.property("statusCode");
                 expect(res.body).have.property("message");
                 expect(res.body).have.property("data");
-                expect(res.body.statusCode).to.equal(200);
+                expect(res.body.statusCode).to.equal(201);
                 expect(res.body.message).to.equal("User created successfully");
                 expect(res.body.data).have.property("_id");
                 expect(res.body.data).have.property("isDeleted");
