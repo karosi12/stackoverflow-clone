@@ -8,7 +8,6 @@
     "prod": "cross-env NODE_ENV=production npm run clean && npm run transpile && ./node_modules/.bin/npm-run-all build server",
     "build": "npm-run-all clean transpile",
     "clean": "rimraf ./dist",
-    "install": "npm i",
     "transpile": "babel ./src --out-dir dist --copy-files",
     "server": "node dist/bin/www.js",
     "dev": "nodemon --watch src --delay 250ms --exec babel-node src/bin/www.js --ignore tests/",
